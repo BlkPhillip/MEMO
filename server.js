@@ -5,14 +5,17 @@
 const express = require("express");
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
+const bodyParser = require("body-parser");
 
 const indexRouter = require("./routes/index");
+const memoRouter = require("./routes/memos");
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.set("layout", "layouts/layout");
 app.use(expressLayouts);
 app.use(express.static("public"));
+app.use(express.urlencoded({ limit: "10mb", extended: false }));
 
 // DB Conn
 const conn = require("./db/conn");
@@ -29,5 +32,6 @@ conn();
 // db.once("open", () => console.log("Connect to Mongoose"));
 
 app.use("/", indexRouter);
+app.use("/memos", memoRouter);
 
 app.listen(process.env.PORT || 3000);
