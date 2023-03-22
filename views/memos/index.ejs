@@ -1,10 +1,31 @@
-<h2>Search Memos</h2>
+<h2>Search Memo</h2>
 <form action="/memos" method="GET">
-  <label>Name</label>
-  <input type="text" name="name" value="<%= searchOptions.name %>" />
+  <div>
+    <label>Title</label>
+    <input type="text" name="title" value="<%= searchOptions.title %>" />
+  </div>
+  <div>
+    <label>Date After</label>
+    <input
+      type="date"
+      name="date_after"
+      value="<%= searchOptions.date_after %>"
+    />
+  </div>
+  <div>
+    <label>Date Before</label>
+    <input
+      type="date"
+      name="date_before"
+      value="<%= searchOptions.date_before %>"
+    />
+  </div>
   <button type="submit">Search</button>
 </form>
 <br />
-<% memos.forEach(memo => { %>
-<div><%= memo.name %></div>
-<% }); %>
+<div>
+  <% memos.forEach(memo => { %>
+  <div><%= memo.title %></div>
+  <!-- <img height="150" width="100" src="<%= memo.filesUploadPath %>" /> -->
+  <% }); %>
+</div>
