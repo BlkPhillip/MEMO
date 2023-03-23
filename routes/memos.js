@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
+
 const path = require("path");
 const fs = require("fs");
 const Author = require("../models/author");
 const Memo = require("../models/memo");
-const uploadPath = path.join("public", Memo.uploadFiles);
+// const uploadPath = path.join("public", Memo.uploadFiles);
 const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"];
-const upload = multer({
-  dest: uploadPath,
-  fileFilter: (req, file, callback) => {
-    callback(null, imageMimeTypes.includes(file.mimetype));
-  },
-});
+// const upload = multer({
+//   dest: uploadPath,
+//   fileFilter: (req, file, callback) => {
+//     callback(null, imageMimeTypes.includes(file.mimetype));
+//   },
+// });
 
 // All Memos Route
 router.get("/", async (req, res) => {
@@ -43,34 +43,24 @@ router.get("/new", async (req, res) => {
 });
 
 // Create Memo Route
-router.post("/", upload.single("filesUpload"), async (req, res) => {
-  const fileName = req.file != null ? req.file.filename : null;
+router.post("/", async (req, res) => {
   const memo = new Memo({
     title: req.body.title,
     author: req.body.author,
     date: new Date(req.body.date),
     expense: req.body.expense,
-    filesUpload: fileName,
     description: req.body.description,
   });
+  saveUpfiles(memo, req.body.filesUp);
 
   try {
     const newMemo = await memo.save();
     //  res.redirect(`authors/${newMemo.id}`);
     res.redirect(`memos`);
   } catch {
-    if (memo.filesUpload != null) {
-      removeUploadFile(memo.filesUpload);
-    }
     renderNewPage(res, memo, true);
   }
 });
-
-function removeUploadFile(fileName) {
-  fs.unlink(path.join(uploadPath, fileName), (err) => {
-    if (err) console.error(err);
-  });
-}
 
 async function renderNewPage(res, memo, hasError = false) {
   try {
@@ -83,6 +73,15 @@ async function renderNewPage(res, memo, hasError = false) {
     res.render("memos/new", params);
   } catch {
     res.redirect("/memos");
+  }
+}
+
+function saveUpfiles(memo, fileEncoded) {
+  if (fileEncoded == null) return;
+  const file = JSON.parse(fileEncoded);
+  if (file != null && imageMimeTypes.includes(file.type)) {
+    memo.filesUpload = new Buffer.from(file.data, "base64");
+    memo.filesUploadType = file.type;
   }
 }
 
