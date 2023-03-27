@@ -1,0 +1,10 @@
+<h2><%= memo.title %></h2>
+<img width="100" height="150" src="<%= memo.filesUploadPath %>" />
+<div>Author: <%= memo.author.name %></div>
+<div>Date: <%= memo.date.toDateString() %></div>
+<div>Expense: <%= memo.expense %></div>
+<div>Description: <%= memo.description %></div>
+
+<a href="/memos/<%= memo.id %>/edit">Edit</a>
+<%- include('../partials/deleteForm', { url: `/memos/${memo.id}` }) %>
+<a href="/authors/<%= memo.author.id %>">View Author</a>

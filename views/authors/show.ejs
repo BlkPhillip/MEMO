@@ -4,6 +4,8 @@
 (memosByAuthor.length > 0) { %>
 <h2>Memos By Author</h2>
 <% memosByAuthor.forEach(memo => { %>
-<div><%= memo.title %></div>
-<img height="150" width="100" src="<%= memo.filesUploadPath %>" />
+<a href="/memos/<%= memo.id %>">
+  <div><%= memo.title %></div>
+  <img height="150" width="100" src="<%= memo.filesUploadPath %>" />
+</a>
 <% }) %> <% } %>
