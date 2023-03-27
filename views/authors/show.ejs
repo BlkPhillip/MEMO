@@ -1,0 +1,9 @@
+<h2><%= author.name %></h2>
+<a href="/authors/<%= author.id %>/edit">Edit</a>
+<%- include('../partials/deleteForm', { url: `/authors/${author.id}` }) %> <% if
+(memosByAuthor.length > 0) { %>
+<h2>Memos By Author</h2>
+<% memosByAuthor.forEach(memo => { %>
+<div><%= memo.title %></div>
+<img height="150" width="100" src="<%= memo.filesUploadPath %>" />
+<% }) %> <% } %>

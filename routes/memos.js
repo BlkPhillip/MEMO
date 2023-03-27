@@ -1,18 +1,8 @@
 const express = require("express");
 const router = express.Router();
-
-const path = require("path");
-const fs = require("fs");
 const Author = require("../models/author");
 const Memo = require("../models/memo");
-// const uploadPath = path.join("public", Memo.uploadFiles);
 const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"];
-// const upload = multer({
-//   dest: uploadPath,
-//   fileFilter: (req, file, callback) => {
-//     callback(null, imageMimeTypes.includes(file.mimetype));
-//   },
-// });
 
 // All Memos Route
 router.get("/", async (req, res) => {
