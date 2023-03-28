@@ -1,6 +1,7 @@
 @import "variables.css";
 @import "header.css";
 @import "buttons.css";
+@import "form.css";
 
 :root {
   font-family: Arial, Helvetica, sans-serif;

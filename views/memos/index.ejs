@@ -1,26 +1,32 @@
 <h2 class="page-header">Search Memo</h2>
 <form action="/memos" method="GET">
-  <div>
-    <label>Title</label>
-    <input type="text" name="title" value="<%= searchOptions.title %>" />
+  <div class="form-row">
+    <div class="form-item">
+      <label>Title</label>
+      <input type="text" name="title" value="<%= searchOptions.title %>" />
+    </div>
   </div>
-  <div>
-    <label>Date After</label>
-    <input
-      type="date"
-      name="date_after"
-      value="<%= searchOptions.date_after %>"
-    />
+  <div class="form-row">
+    <div class="form-item">
+      <label>Date After</label>
+      <input
+        type="date"
+        name="date_after"
+        value="<%= searchOptions.date_after %>"
+      />
+    </div>
+    <div class="form-item">
+      <label>Date Before</label>
+      <input
+        type="date"
+        name="date_before"
+        value="<%= searchOptions.date_before %>"
+      />
+    </div>
   </div>
-  <div>
-    <label>Date Before</label>
-    <input
-      type="date"
-      name="date_before"
-      value="<%= searchOptions.date_before %>"
-    />
+  <div class="form-row form-row-end">
+    <button class="btn btn-primary" type="submit">Search</button>
   </div>
-  <button type="submit">Search</button>
 </form>
 <br />
 <div>

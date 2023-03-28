@@ -1,38 +1,45 @@
-<div>
-  <label>Name</label>
-  <input type="text" name="title" value="<%= memo.title %>" />
+<div class="form-row">
+  <div class="form-item">
+    <label>Name</label>
+    <input type="text" name="title" value="<%= memo.title %>" />
+  </div>
+  <div class="form-item">
+    <label>Author</label>
+    <select name="author">
+      <% authors.forEach(author => { %> <% if (author.id === memo.author) { %>
+      <option
+        selected
+        label="<%= author.name %>"
+        value="<%= author.id %>"
+      ></option>
+      <% } else { %>
+      <option label="<%= author.name %>" value="<%= author.id %>"></option>
+      <% } %> <% }) %>
+    </select>
+  </div>
 </div>
-<div>
-  <label>Author</label>
-  <select name="author">
-    <% authors.forEach(author => { %> <% if (author.id === memo.author) { %>
-    <option
-      selected
-      label="<%= author.name %>"
-      value="<%= author.id %>"
-    ></option>
-    <% } else { %>
-    <option label="<%= author.name %>" value="<%= author.id %>"></option>
-    <% } %> <% }) %>
-  </select>
+<div class="form-row">
+  <div class="form-item">
+    <label>Date</label>
+    <input
+      type="date"
+      name="date"
+      value="<%= memo.Date == null ? '' : memo.date.toISOString().split('T')[0] %>"
+    />
+  </div>
+  <div class="form-item">
+    <label>Expense</label>
+    <input type="number" name="expense" value="<%= memo.expense %>" />
+  </div>
 </div>
-<div>
-  <label>Date</label>
-  <input
-    type="date"
-    name="date"
-    value="<%= memo.Date == null ? '' : memo.date.toISOString().split('T')[0] %>"
-  />
-</div>
-<div>
-  <label>Expense</label>
-  <input type="number" name="expense" value="<%= memo.expense %>" />
-</div>
-<div>
-  <label>Upload Files</label>
-  <input type="file" name="filesUp" class="filepond" />
-</div>
-<div>
-  <label>Memo</label>
-  <textarea name="description"><%= memo.description %></textarea>
+
+<div class="form-row">
+  <div class="form-item form-item-no-grow">
+    <label>Upload Files</label>
+    <input type="file" name="filesUp" class="filepond" />
+  </div>
+  <div class="form-item">
+    <label>Memo</label>
+    <textarea name="description"><%= memo.description %></textarea>
+  </div>
 </div>
