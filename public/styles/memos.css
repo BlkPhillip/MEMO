@@ -1,0 +1,63 @@
+.root {
+  --memo-cover-width: 200px;
+  --memo-cover-width-large: 325px;
+  --memo-cover-aspect-ratio: 0.75px;
+  --memo-cover-height: calc(
+    var(--memo-cover-width) / var(--memo-cover-aspect-ratio)
+  );
+}
+
+.memo-cover {
+  width: var(--memo-cover-width);
+  height: var(--memo-cover-height);
+}
+
+.memo-cover-large {
+  --memo-cover-width: var(--memo-cover-width-large);
+}
+
+.memo-grid {
+  display: grid;
+  justify-content: center;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, var(--memo-cover-width));
+}
+
+.memo-grid-large {
+  grid-template-columns: repeat(auto-fill, var(--memo-cover-width-large));
+}
+
+.memo-details {
+  display: flex;
+}
+
+.memo-details-label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.memo-details-grid {
+  display: grid;
+  align-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  grid-template-columns: auto auto;
+}
+
+.memo-details-button-grid {
+  display: grid;
+  justify-items: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  grid-template-areas:
+    "edit delete"
+    "author author";
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.memo-details-author-button {
+  grid-area: author;
+  justify-self: stretch;
+}

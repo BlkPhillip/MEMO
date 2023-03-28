@@ -87,7 +87,7 @@ router.put("/:id", async (req, res) => {
       saveUpfiles(memo, req.body.filesUp);
     }
     await memo.save();
-    res.redirect(`memos/${memo.id}`);
+    res.redirect(`/memos/${memo.id}`);
   } catch {
     if (memo != null) {
       renderEditPage(res, memo, true);

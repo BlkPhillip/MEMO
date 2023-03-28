@@ -29,11 +29,4 @@
   </div>
 </form>
 <br />
-<div>
-  <% memos.forEach(memo => { %>
-  <a href="/memos/<%= memo.id %>">
-    <div><%= memo.title %></div>
-    <img height="150" width="100" src="<%= memo.filesUploadPath %>" />
-  </a>
-  <% }); %>
-</div>
+<%- include('../partials/memoGrid', { memos: memos, large: true }) %>

@@ -1,12 +1,7 @@
-// if (process.env.NODE_ENV !== "production") {
-//   require("dotenv").parse();
-// }
-
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
 const expressLayouts = require("express-ejs-layouts");
-// const bodyParser = require("body-parser");
 
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
@@ -24,15 +19,6 @@ app.use(express.urlencoded({ limit: "10mb", extended: false }));
 const conn = require("./db/conn");
 
 conn();
-
-// const mongoose = require("mongoose");
-// mongoose.connect(process.env.DATABASE_URL, {
-//   useNewUrlParser: true,
-// });
-
-// const db = mongoose.connection;
-// db.on("error", (error) => console.error(error));
-// db.once("open", () => console.log("Connect to Mongoose"));
 
 app.use("/", indexRouter);
 app.use("/authors", authorRouter);

@@ -1,0 +1,14 @@
+<% memoCoverClass = locals.large ? 'memo-cover-large' : '' %> <% memoGridClass =
+locals.large ? 'memo-grid-large' : '' %>
+
+<div class="memo-grid <%= memoGridClass %>">
+  <% memos.forEach(memo=> { %>
+  <a href="/memos/<%= memo.id %>">
+    <div><%= memo.title %></div>
+    <img
+      class="memo-cover <%= memoCoverClass %>"
+      src="<%= memo.filesUploadPath %>"
+    />
+  </a>
+  <% }) %>
+</div>

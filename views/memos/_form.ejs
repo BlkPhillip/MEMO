@@ -29,14 +29,24 @@
   </div>
   <div class="form-item">
     <label>Expense</label>
-    <input type="number" name="expense" value="<%= memo.expense %>" />
+    <input
+      type="number"
+      name="expense"
+      placeholder="0,00 €"
+      value="<%= memo.expense %>"
+    />
   </div>
 </div>
 
 <div class="form-row">
   <div class="form-item form-item-no-grow">
     <label>Upload Files</label>
-    <input type="file" name="filesUp" class="filepond" />
+    <input
+      type="file"
+      name="filesUp"
+      class="filepond memo-cover"
+      value="fileupload"
+    />
   </div>
   <div class="form-item">
     <label>Memo</label>

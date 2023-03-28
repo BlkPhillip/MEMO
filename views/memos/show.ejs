@@ -1,10 +1,25 @@
 <h2 class="page-header"><%= memo.title %></h2>
-<img width="100" height="150" src="<%= memo.filesUploadPath %>" />
-<div>Author: <%= memo.author.name %></div>
-<div>Date: <%= memo.date.toDateString() %></div>
-<div>Expense: <%= memo.expense %></div>
-<div>Description: <%= memo.description %></div>
-
-<a href="/memos/<%= memo.id %>/edit">Edit</a>
-<%- include('../partials/deleteForm', { url: `/memos/${memo.id}` }) %>
-<a href="/authors/<%= memo.author.id %>">View Author</a>
+<div class="memo-details">
+  <div>
+    <img width="100" height="150" src="<%= memo.filesUploadPath %>" />
+    <div class="memo-details-btn-grid">
+      <a class="btn btn-primary" href="/memos/<%= memo.id %>/edit">Edit</a>
+      <%- include('../partials/deleteForm', { url: `/memos/${memo.id}` }) %>
+      <a
+        class="btn btn-primary memo-details-author-button"
+        href="/authors/<%= memo.author.id %>"
+        >View Author</a
+      >
+    </div>
+  </div>
+  <div class="memo-details-grid">
+    <div class="memo-details-label">Author:</div>
+    <div><%= memo.author.name %></div>
+    <div class="memo-details-label">Publish Date:</div>
+    <div><%= memo.date.toDateString() %></div>
+    <div class="memo-details-label">Expense</div>
+    <div><%= memo.expense %></div>
+    <div class="memo-details-label">Description</div>
+    <div><%= memo.description %></div>
+  </div>
+</div>
