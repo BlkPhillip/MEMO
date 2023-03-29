@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
-const memo = require("../models/memo");
 const Memo = require("../models/memo");
 const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"];
 

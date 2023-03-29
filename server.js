@@ -6,6 +6,8 @@ const expressLayouts = require("express-ejs-layouts");
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
 const memoRouter = require("./routes/memos");
+const loginRouter = require("./routes/login");
+const registerRouter = require("./routes/register");
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -23,5 +25,7 @@ conn();
 app.use("/", indexRouter);
 app.use("/authors", authorRouter);
 app.use("/memos", memoRouter);
+app.use("/login", loginRouter);
+app.use("/register", registerRouter);
 
 app.listen(process.env.PORT || 3000);

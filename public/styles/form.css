@@ -23,7 +23,7 @@
 }
 
 .form-item-no-grow {
-  flex-grow: 0;
+  flex-grow: 1;
 }
 
 .form-row-end {

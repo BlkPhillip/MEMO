@@ -36,9 +36,8 @@ const memoSchema = new mongoose.Schema({
 
 memoSchema.virtual("filesUploadPath").get(function () {
   if (this.filesUpload != null && this.filesUploadType != null) {
-    return `data:${
-      this.filesUploadType
-    };charset=utf-8;base64,${this.filesUpload.toString("base64")}`;
+    return `data:${this.filesUploadType};
+    charset=utf-8;base64,${this.filesUpload.toString("base64")}`;
   }
 });
 

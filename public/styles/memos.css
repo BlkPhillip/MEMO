@@ -43,9 +43,10 @@
   align-items: center;
   gap: 1rem;
   grid-template-columns: auto auto;
+  margin-left: 1rem;
 }
 
-.memo-details-button-grid {
+.memo-details-btn-grid {
   display: grid;
   justify-items: flex-start;
   align-items: flex-start;
