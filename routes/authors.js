@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
 const Memo = require("../models/memo");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 // All Authors Route
 router.get("/", async (req, res) => {
@@ -80,7 +81,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAuth, async (req, res) => {
   let author;
   try {
     author = await Author.deleteOne({ _id: req.params.id });

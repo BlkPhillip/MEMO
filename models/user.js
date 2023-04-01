@@ -1,47 +1,48 @@
 const mongoose = require("mongoose");
-const Joi = require("joi");
+const { isEmail } = require("validator");
+const bcrypt = require("bcrypt");
 
-const User = mongoose.model(
-  "User",
-  new mongoose.Schema({
-    name: {
-      type: String,
-      required: [true, "Please add a name"],
-      minlength: 5,
-      maxlength: 50,
-    },
-    email: {
-      type: String,
-      required: [true, "Please add an email"],
-      minlength: 5,
-      maxlength: 255,
-      unique: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please add a valid email",
-      ],
-    },
-    password: {
-      type: String,
-      required: [true, "Please add a password"],
-      minlength: 6,
-      maxlength: 1024,
-      select: false,
-    },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-  })
-);
-
-const schema = Joi.object({
-  name: Joi.string().min(5).max(50).required(),
-  email: Joi.string().min(5).max(255).required().email(),
-  password: Joi.string().min(5).max(255).required(),
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: [true, "Please enter a email"],
+    unique: true,
+    lowercase: true,
+    validate: [isEmail, "please enter a valid email"],
+  },
+  password: {
+    type: String,
+    require: [true, "Please enter an password"],
+    minlength: [6, "Minimum password lenght is 6 characters"],
+  },
 });
 
-exports.User = User;
-exports.schema = schema;
+// a function after save to db
+userSchema.post("save", function (doc, next) {
+  console.log("new user was created & saved", doc);
+  next();
+});
+
+// a function after before save to db
+userSchema.pre("save", async function (next) {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// static method to login user
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error("incorrect password");
+  }
+  throw Error("incorrect email");
+};
+
+const User = mongoose.model("user", userSchema);
+
+module.exports = User;

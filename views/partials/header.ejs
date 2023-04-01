@@ -3,10 +3,15 @@
     <a class="header-title" href="/">Memo App</a>
     <ul>
       <li><a href="/authors">Authors</a></li>
-      <li><a href="/authors/new">Add Author</a></li>
       <li><a href="/memos">Memos</a></li>
+      <% if (user) { %>
+      <li><a href="/authors/new">Add Author</a></li>
       <li><a href="/memos/new">Add Memo</a></li>
+      <li>Welcome, <%= user.email %></li>
+      <li><a href="/logout">logout</a></li>
+      <% } else { %>
       <li><a href="/login">Login</a></li>
+      <% } %>
     </ul>
   </nav>
 </header>
