@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
 const Memo = require("../models/memo");
-const { requireAuth } = require("../middleware/authMiddleware");
+const {
+  requireAuth,
+  checkUser,
+  authRole,
+} = require("../middleware/authMiddleware");
 
 // All Authors Route
 router.get("/", async (req, res) => {
@@ -24,7 +28,7 @@ router.get("/new", (req, res) => {
 });
 
 // Create Author Route
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   const author = new Author({
     name: req.body.name,
   });
@@ -62,7 +66,7 @@ router.get("/:id/edit", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", checkUser, authRole("admin"), async (req, res) => {
   let author;
   try {
     author = await Author.findById(req.params.id);
@@ -81,14 +85,14 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", requireAuth, async (req, res) => {
+router.delete("/:id", checkUser, authRole("admin"), async (req, res) => {
   let author;
   try {
     author = await Author.deleteOne({ _id: req.params.id });
     res.redirect("/authors");
   } catch {
     if (author == null) {
-      res.redirect("/");
+      res.redirect("/authors");
     } else {
       res.redirect(`/authors/${author.id}`);
     }

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const ErrorResponse = require("./errorResponse");
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -32,8 +33,8 @@ const checkUser = (req, res, next) => {
         next();
       } else {
         console.log(decodedToken);
-        let user = await User.findById(decodedToken.id);
-        res.locals.user = user;
+        req.user = await User.findById(decodedToken.id);
+        res.locals.user = req.user;
         next();
       }
     });
@@ -43,4 +44,20 @@ const checkUser = (req, res, next) => {
   }
 };
 
-module.exports = { requireAuth, checkUser };
+const authRole = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      // return next(
+      //   new ErrorResponse(
+      //     `User role ${req.user.role} is not authorized to access this route`,
+      //     403
+      //   )
+      // );
+      res.redirect("/login");
+    } else {
+      next();
+    }
+  };
+};
+
+module.exports = { requireAuth, checkUser, authRole };

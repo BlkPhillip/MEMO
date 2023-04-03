@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
 const Memo = require("../models/memo");
-const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"];
+const {
+  requireAuth,
+  checkUser,
+  authRole,
+} = require("../middleware/authMiddleware");
+// const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"];
 
 // All Memos Route
 router.get("/", async (req, res) => {
@@ -33,7 +38,7 @@ router.get("/new", async (req, res) => {
 });
 
 // Create Memo Route
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   const memo = new Memo({
     title: req.body.title,
     author: req.body.author,
@@ -41,7 +46,7 @@ router.post("/", async (req, res) => {
     expense: req.body.expense,
     description: req.body.description,
   });
-  saveUpfiles(memo, req.body.filesUp);
+  // saveUpfiles(memo, req.body.filesUp);
 
   try {
     const newMemo = await memo.save();
@@ -72,7 +77,7 @@ router.get("/:id/edit", async (req, res) => {
 });
 
 // Update Memo Route
-router.put("/:id", async (req, res) => {
+router.put("/:id", checkUser, authRole("admin"), async (req, res) => {
   let memo;
 
   try {
@@ -82,9 +87,9 @@ router.put("/:id", async (req, res) => {
     memo.date = new Date(req.body.date);
     memo.expense = req.body.expense;
     memo.description = req.body.description;
-    if (req.body.filesUp != null && req.body.filesUp !== "") {
-      saveUpfiles(memo, req.body.filesUp);
-    }
+    // if (req.body.filesUp != null && req.body.filesUp !== "") {
+    //   saveUpfiles(memo, req.body.filesUp);
+    // }
     await memo.save();
     res.redirect(`/memos/${memo.id}`);
   } catch {
@@ -97,7 +102,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete Memo
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkUser, authRole("admin"), async (req, res) => {
   let memo;
   try {
     memo = await Memo.findById(req.params.id);
@@ -143,13 +148,13 @@ async function renderEditPage(res, memo, hasError = false) {
   }
 }
 
-function saveUpfiles(memo, fileEncoded) {
-  if (fileEncoded == null) return;
-  const file = JSON.parse(fileEncoded);
-  if (file != null && imageMimeTypes.includes(file.type)) {
-    memo.filesUpload = new Buffer.from(file.data, "base64");
-    memo.filesUploadType = file.type;
-  }
-}
+// function saveUpfiles(memo, fileEncoded) {
+//   if (fileEncoded == null) return;
+//   const file = JSON.parse(fileEncoded);
+//   if (file != null && imageMimeTypes.includes(file.type)) {
+//     memo.filesUpload = new Buffer.from(file.data, "base64");
+//     memo.filesUploadType = file.type;
+//   }
+// }
 
 module.exports = router;
