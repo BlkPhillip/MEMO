@@ -1,7 +1,7 @@
 <h2 class="page-header"><%= memo.title %></h2>
 <div class="memo-details">
   <div>
-    <img width="100" height="150" src="<%= memo.filesUploadPath %>" />
+    <img width="200" height="300" src="<%= memo.coverImagePath %>" />
     <div class="memo-details-btn-grid">
       <a class="btn btn-primary" href="/memos/<%= memo.id %>/edit">Edit</a>
       <%- include('../partials/deleteForm', { url: `/memos/${memo.id}` }) %>

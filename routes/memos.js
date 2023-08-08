@@ -7,7 +7,17 @@ const {
   checkUser,
   authRole,
 } = require("../middleware/authMiddleware");
-// const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"];
+// multer
+const multer = require("multer");
+const path = require("path");
+const filesPath = path.join("public", Memo.uploadsPath);
+const imageMimeTypes = ["image/jpeg", "image/png", "images/gif"];
+const upload = multer({
+  dest: filesPath,
+  fileFilter: (req, file, callback) => {
+    callback(null, imageMimeTypes.includes(file.mimetype));
+  },
+});
 
 // All Memos Route
 router.get("/", async (req, res) => {
@@ -38,16 +48,16 @@ router.get("/new", async (req, res) => {
 });
 
 // Create Memo Route
-router.post("/", requireAuth, async (req, res) => {
+router.post("/", upload.single("files"), requireAuth, async (req, res) => {
+  const fileName = req.file != null ? req.file.filename : null;
   const memo = new Memo({
     title: req.body.title,
     author: req.body.author,
     date: new Date(req.body.date),
     expense: req.body.expense,
+    fileUpload: fileName,
     description: req.body.description,
   });
-  // saveUpfiles(memo, req.body.filesUp);
-
   try {
     const newMemo = await memo.save();
     res.redirect(`memos/${newMemo.id}`);
@@ -87,9 +97,6 @@ router.put("/:id", checkUser, authRole("admin"), async (req, res) => {
     memo.date = new Date(req.body.date);
     memo.expense = req.body.expense;
     memo.description = req.body.description;
-    // if (req.body.filesUp != null && req.body.filesUp !== "") {
-    //   saveUpfiles(memo, req.body.filesUp);
-    // }
     await memo.save();
     res.redirect(`/memos/${memo.id}`);
   } catch {
@@ -147,14 +154,5 @@ async function renderEditPage(res, memo, hasError = false) {
     res.redirect("/memos");
   }
 }
-
-// function saveUpfiles(memo, fileEncoded) {
-//   if (fileEncoded == null) return;
-//   const file = JSON.parse(fileEncoded);
-//   if (file != null && imageMimeTypes.includes(file.type)) {
-//     memo.filesUpload = new Buffer.from(file.data, "base64");
-//     memo.filesUploadType = file.type;
-//   }
-// }
 
 module.exports = router;

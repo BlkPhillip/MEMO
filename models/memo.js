@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const path = require("path");
+const uploadsPath = "uploads/files";
 
 const memoSchema = new mongoose.Schema({
   title: {
@@ -21,10 +23,7 @@ const memoSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
-  filesUpload: {
-    type: Buffer,
-  },
-  filesUploadType: {
+  fileUpload: {
     type: String,
   },
   author: {
@@ -34,11 +33,12 @@ const memoSchema = new mongoose.Schema({
   },
 });
 
-memoSchema.virtual("filesUploadPath").get(function () {
-  if (this.filesUpload != null && this.filesUploadType != null) {
-    return `data:${this.filesUploadType};
-    charset=utf-8;base64,${this.filesUpload.toString("base64")}`;
+memoSchema.virtual("coverImagePath").get(function () {
+  if (this.coverImageName != null) {
+    return path.join("/", uploadsPath, this.coverImageName);
   }
 });
 
 module.exports = mongoose.model("Memo", memoSchema);
+
+module.exports.uploadsPath = uploadsPath;

@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const ErrorResponse = require("./errorResponse");
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -47,12 +46,6 @@ const checkUser = (req, res, next) => {
 const authRole = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      // return next(
-      //   new ErrorResponse(
-      //     `User role ${req.user.role} is not authorized to access this route`,
-      //     403
-      //   )
-      // );
       res.redirect("/login");
     } else {
       next();

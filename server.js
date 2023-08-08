@@ -1,5 +1,4 @@
 const express = require("express");
-
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
 const memoRouter = require("./routes/memos");
@@ -24,6 +23,7 @@ app.use(methodOverride("_method"));
 
 // middleware
 app.use(express.static("public"));
+app.use(express.static("public/uploads/files"));
 app.use(express.urlencoded({ limit: "10mb", extended: false }));
 app.use(express.json());
 app.use(cookieParser());
